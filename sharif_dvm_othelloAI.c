@@ -9,6 +9,15 @@ int main(int argc, char const *argv[])
     int i,j; // counters;
     int* pMapArray = &MapArray[0][0]; //sending 2d-array to showmap function as a pointer
     showmap(pargv,pMapArray); // puts argvs in 2d-array and prints the array
+    // nested for to print the array
+    for(j = 0; j < 8; j++)
+    {
+        for(i = 0; i < 8; i++)
+        {
+            printf("%d ",MapArray[i][j]);
+        }
+        printf("\n");
+    }
     return 0;
 }
 
@@ -25,14 +34,5 @@ void showmap(char const *pargv, int *pMapArray)
         }
         ++pargv;
         ++pargv;
-    }
-    // nested for to print the array
-    for(j = 0; j < 8; j++)
-    {
-        for(i = 0; i < 8; i++)
-        {
-            printf("%d ",MapArray[i][j]);
-        }
-        printf("\n");
     }
 }
