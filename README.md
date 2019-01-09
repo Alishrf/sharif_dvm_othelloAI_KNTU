@@ -5,3 +5,4 @@ This Project is Started on 1/9/2019
 for the final semester project of "Fundamentals of Programming" by Dr. Behrooz Nasihatkon
 
 It is a great experience creating an AI to win the othello game at age 19.
+Hi I am ali and I want to say "WE ARE THE BEST".
