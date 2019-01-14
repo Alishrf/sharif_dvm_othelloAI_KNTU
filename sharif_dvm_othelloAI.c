@@ -20,9 +20,17 @@ int main(int argc, char const *argv[])
     for(int i=0;i<60;i++){
         validcell[0][i]=-1;
     }
-    bead=*argv[9]; //bead var shows our bead color
+    
+    bead=*argv[9]-48; //bead var shows our bead color
+    printf("b=%d\n",bead);
     createmap(argv,MapArray); // puts argvs in 2d-array
     printmap(MapArray); //  prints the array
+    checkvalidcell(MapArray,validcell,bead);
+    for(int i=0;validcell[0][i]!=-1;i++){
+        printf("x=%d\n",validcell[0][i]);
+        printf("y=%d\n",validcell[1][i]);
+        printf("counter=%d\n",validcell[2][i]);
+    }
     return 0;
 }
 
@@ -73,14 +81,112 @@ void checkvalidcell(int MapArray[][8],int validcell [][60],int bead){
 void checkdown(int MapArray[][8],int validcell [][60],int bead,int x,int y){
     int i,j;
     for(i=1;x+i<8;i++){
-        if(MapArray[x+i][y]!=0 && MapArray[x+i][y]!=bead){
-            for(j=0;validcell[0][j]==-1;j++);
+        if(MapArray[x+i][y]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
             validcell[0][j]=x;
             validcell[1][j]=y;
             validcell[2][j]=i-1;
             break;
         }
         if(MapArray[x+i][y]==0)
+        break;
+    }
+}
+void checkup(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;x-i>0;i++){
+        if(MapArray[x][y-i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x-i][y]==0)
+        break;
+    }
+}
+void checkleft(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;y-i>0;i++){
+        if(MapArray[x][y-i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x][y-i]==0)
+        break;
+    }
+}
+void checkright(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;y+i<8;i++){
+        if(MapArray[x][y+i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x][y+i]==0)
+        break;
+    }
+}
+void checkdownright(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;y+i<8 && x+i<8;i++){
+        if(MapArray[x+i][y+i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x+i][y+i]==0)
+        break;
+    }
+}
+void checkupright(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;y+i<8 && x-i>0;i++){
+        if(MapArray[x-i][y+i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x-i][y+i]==0)
+        break;
+    }
+}
+void checkupleft(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;y-i>0 && x-i>0;i++){
+        if(MapArray[x-i][y-i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x-i][y-i]==0)
+        break;
+    }
+}
+void checkdownleft(int MapArray[][8],int validcell [][60],int bead,int x,int y){
+    int i,j;
+    for(i=1;y-i>0 && x+i<8;i++){
+        if(MapArray[x+i][y-i]==bead){
+            for(j=0;validcell[0][j]!=-1;j++);
+            validcell[0][j]=x;
+            validcell[1][j]=y;
+            validcell[2][j]=i-1;
+            break;
+        }
+        if(MapArray[x+i][y-i]==0)
         break;
     }
 }
