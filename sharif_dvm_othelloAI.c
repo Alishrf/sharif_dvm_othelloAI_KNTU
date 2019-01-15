@@ -22,15 +22,11 @@ int main(int argc, char const *argv[])
     }
     
     bead=*argv[9]-48; //bead var shows our bead color
-    printf("b=%d\n",bead);
+    //printf("b=%d\n",bead);
     createmap(argv,MapArray); // puts argvs in 2d-array
-    printmap(MapArray); //  prints the array
+   // printmap(MapArray); //  prints the array
     checkvalidcell(MapArray,validcell,bead);
-    for(int i=0;validcell[0][i]!=-1;i++){
-        printf("x=%d\n",validcell[0][i]);
-        printf("y=%d\n",validcell[1][i]);
-        printf("counter=%d\n",validcell[2][i]);
-    }
+    //printf("%d %d",validcell[1][0],validcell[0][0]);
     return 0;
 }
 
