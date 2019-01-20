@@ -15,21 +15,16 @@ int main(int argc, char const *argv[])
 {
     int bead;
     int MapArray[8][8]; // our game map 2d-array
-    //int* pMapArray = &MapArray[0][0]; //sending 2d-array to showmap function as a pointer
     int validcell[3][60];//shows valid cell
     for(int i=0;i<60;i++){
         validcell[0][i]=-1;
     }
-    
     bead=*argv[9]-48; //bead var shows our bead color
-    //printf("b=%d\n",bead);
     createmap(argv,MapArray); // puts argvs in 2d-array
-   // printmap(MapArray); //  prints the array
     checkvalidcell(MapArray,validcell,bead);
-    //printf("%d %d",validcell[1][0],validcell[0][0]);
+    printf("%d %d",validcell[1][0],validcell[0][0]);
     return 0;
 }
-
 void createmap(char const *pargv[], int MapArray[][8])
 {
     int i,j; 
@@ -42,7 +37,6 @@ void createmap(char const *pargv[], int MapArray[][8])
         }
     }
 }
-
 void printmap(int MapArray[][8])
 {
     int i,j;
