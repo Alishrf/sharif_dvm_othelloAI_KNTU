@@ -59,36 +59,8 @@ void printmap(int MapArray[][8])
         printf("\n");
     }
 }
-void checkvalidcell(int MapArray[][8], int validcell[][60], int bead)
+void removeDangerZone(int validcell[][60])
 {
-    int i, j;
-    for (i = 0; i < 8; i++)
-    {
-        for (j = 0; j < 8; j++)
-        {
-            if (MapArray[i][j] == 0)
-            {
-                if ((i + 1) < 8 && MapArray[i + 1][j] != bead && MapArray[i + 1][j] != 0)
-                    checkdown(MapArray, validcell, bead, i, j);
-                if ((i - 1) > 0 && MapArray[i - 1][j] != bead && MapArray[i - 1][j] != 0)
-                    checkup(MapArray, validcell, bead, i, j);
-                if ((j + 1) < 8 && MapArray[i][j + 1] != bead && MapArray[i][j + 1] != 0)
-                    checkright(MapArray, validcell, bead, i, j);
-                if ((j - 1) > 0 && MapArray[i][j - 1] != bead && MapArray[i][j - 1] != 0)
-                    checkleft(MapArray, validcell, bead, i, j);
-                if ((j + 1) < 8 && (i - 1) > 0 && MapArray[i - 1][j + 1] != bead && MapArray[i - 1][j + 1] != 0)
-                    checkupright(MapArray, validcell, bead, i, j);
-                if ((j + 1) < 8 && (i + 1) < 8 && MapArray[i + 1][j + 1] != bead && MapArray[i + 1][j + 1] != 0)
-                    checkdownright(MapArray, validcell, bead, i, j);
-                if ((j - 1) > 0 && (i - 1) > 0 && MapArray[i - 1][j - 1] != bead && MapArray[i - 1][j - 1] != 0)
-                    checkupleft(MapArray, validcell, bead, i, j);
-                if ((j - 1) > 0 && (i + 1) < 8 && MapArray[i + 1][j - 1] != bead && MapArray[i + 1][j - 1] != 0)
-                    checkdownleft(MapArray, validcell, bead, i, j);
-            }
-        }
-    }
-}
-void removeDangerZone(int validcell[][60]){
     int i, j;
     for (j = 0; j < 3; j++)
     {
@@ -96,9 +68,9 @@ void removeDangerZone(int validcell[][60]){
         {
             if (validcell[j][i] != -1)
             {
-                if (j == 2 && ((validcell[1][i]==1 && validcell[0][i]==1) || (validcell[1][i]==6 && validcell[0][i]==1) || (validcell[1][i]==1 && validcell[0][i]==6) || (validcell[1][i]==6 && validcell[0][i]==6)))
+                if (j == 2 && ((validcell[1][i] == 1 && validcell[0][i] == 1) || (validcell[1][i] == 6 && validcell[0][i] == 1) || (validcell[1][i] == 1 && validcell[0][i] == 6) || (validcell[1][i] == 6 && validcell[0][i] == 6)))
                 {
-                        validcell[j][i]=0;
+                    validcell[j][i] = 0;
                 }
                 //printf("%d ", validcell[j][i]);
             }
@@ -118,7 +90,7 @@ int getMaxIndex(int validcell[][60])
                 //printf("%d ", validcell[j][i]);
                 if (j == 2 && validcell[j][i] > validcell[j][maxIndex])
                 {
-                        maxIndex = i;
+                    maxIndex = i;
                 }
             }
         }
