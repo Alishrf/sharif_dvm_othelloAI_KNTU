@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
     bead = *argv[9] - 48;                      //bead var shows our bead color
     createmap(argv, MapArray);                 // puts argvs in 2d-array
     checkvalidcell(MapArray, validcell, bead); //finds validcells and puts them + score in 60*3 array
-    //printmap(MapArray);  checking game map (commented during final release)
+    //printmap(MapArray);  //checking game map (commented during final release)
     removeDangerZone(validcell);
     int maxIndex = getMaxIndex(validcell); // function finds cell giving best score and returns its index
     printf("%d %d", validcell[1][maxIndex], validcell[0][maxIndex]);
@@ -71,10 +71,10 @@ void removeDangerZone(int validcell[][60]){
                 {
                         validcell[j][i]=0;
                 }
-                printf("%d ", validcell[j][i]);
+                //printf("%d ", validcell[j][i]);
             }
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 int getMaxIndex(int validcell[][60])
@@ -86,14 +86,14 @@ int getMaxIndex(int validcell[][60])
         {
             if (validcell[j][i] != -1)
             {
-                printf("%d ", validcell[j][i]);
+                //printf("%d ", validcell[j][i]);
                 if (j == 2 && validcell[j][i] > validcell[j][maxIndex])
                 {
                         maxIndex = i;
                 }
             }
         }
-        printf("\n");
+        //printf("\n");
     }
     return maxIndex;
 }
