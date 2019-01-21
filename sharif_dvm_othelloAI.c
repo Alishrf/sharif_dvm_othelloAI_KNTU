@@ -11,19 +11,27 @@ void checkupleft(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 void checkright(int MapArray[][8], int validcell[][60], int bead, int x, int y);
 void checkupright(int MapArray[][8], int validcell[][60], int bead, int x, int y);
 void checkleft(int MapArray[][8], int validcell[][60], int bead, int x, int y);
+void removeDangerZone(int validcell[][60]);
+int getMaxIndex(int validcell[][60]);
 int main(int argc, char const *argv[])
 {
+    int i;
     int bead;
     int MapArray[8][8];   // our game map 2d-array
     int validcell[3][60]; //shows valid cell
-    for (int i = 0; i < 60; i++)
+    for (i = 0; i < 60; i++)
     {
         validcell[0][i] = -1;
+        validcell[1][i] = -1;
+        validcell[2][i] = -1;
     }
-    bead = *argv[9] - 48;      //bead var shows our bead color
-    createmap(argv, MapArray); // puts argvs in 2d-array
-    checkvalidcell(MapArray, validcell, bead);
-    printf("%d %d", validcell[1][0], validcell[0][0]);
+    bead = *argv[9] - 48;                      //bead var shows our bead color
+    createmap(argv, MapArray);                 // puts argvs in 2d-array
+    checkvalidcell(MapArray, validcell, bead); //finds validcells and puts them + score in 60*3 array
+    //printmap(MapArray);  //checking game map (commented during final release)
+    removeDangerZone(validcell);
+    int maxIndex = getMaxIndex(validcell); // function finds cell giving best score and returns its index
+    printf("%d %d", validcell[1][maxIndex], validcell[0][maxIndex]);
     return 0;
 }
 void createmap(char const *pargv[], int MapArray[][8])
@@ -50,6 +58,73 @@ void printmap(int MapArray[][8])
         }
         printf("\n");
     }
+}
+void checkvalidcell(int MapArray[][8], int validcell[][60], int bead)
+{
+    int i, j;
+    for (i = 0; i < 8; i++)
+    {
+        for (j = 0; j < 8; j++)
+        {
+            if (MapArray[i][j] == 0)
+            {
+                if ((i + 1) < 8 && MapArray[i + 1][j] != bead && MapArray[i + 1][j] != 0)
+                    checkdown(MapArray, validcell, bead, i, j);
+                if ((i - 1) > 0 && MapArray[i - 1][j] != bead && MapArray[i - 1][j] != 0)
+                    checkup(MapArray, validcell, bead, i, j);
+                if ((j + 1) < 8 && MapArray[i][j + 1] != bead && MapArray[i][j + 1] != 0)
+                    checkright(MapArray, validcell, bead, i, j);
+                if ((j - 1) > 0 && MapArray[i][j - 1] != bead && MapArray[i][j - 1] != 0)
+                    checkleft(MapArray, validcell, bead, i, j);
+                if ((j + 1) < 8 && (i - 1) > 0 && MapArray[i - 1][j + 1] != bead && MapArray[i - 1][j + 1] != 0)
+                    checkupright(MapArray, validcell, bead, i, j);
+                if ((j + 1) < 8 && (i + 1) < 8 && MapArray[i + 1][j + 1] != bead && MapArray[i + 1][j + 1] != 0)
+                    checkdownright(MapArray, validcell, bead, i, j);
+                if ((j - 1) > 0 && (i - 1) > 0 && MapArray[i - 1][j - 1] != bead && MapArray[i - 1][j - 1] != 0)
+                    checkupleft(MapArray, validcell, bead, i, j);
+                if ((j - 1) > 0 && (i + 1) < 8 && MapArray[i + 1][j - 1] != bead && MapArray[i + 1][j - 1] != 0)
+                    checkdownleft(MapArray, validcell, bead, i, j);
+            }
+        }
+    }
+}
+void removeDangerZone(int validcell[][60]){
+    int i, j;
+    for (j = 0; j < 3; j++)
+    {
+        for (i = 0; i < 60; i++)
+        {
+            if (validcell[j][i] != -1)
+            {
+                if (j == 2 && ((validcell[1][i]==1 && validcell[0][i]==1) || (validcell[1][i]==6 && validcell[0][i]==1) || (validcell[1][i]==1 && validcell[0][i]==6) || (validcell[1][i]==6 && validcell[0][i]==6)))
+                {
+                        validcell[j][i]=0;
+                }
+                //printf("%d ", validcell[j][i]);
+            }
+        }
+        //printf("\n");
+    }
+}
+int getMaxIndex(int validcell[][60])
+{
+    int i, j, maxIndex = 0, maxIndexDanger = 0, counter = 0;
+    for (j = 0; j < 3; j++)
+    {
+        for (i = 0; i < 60; i++)
+        {
+            if (validcell[j][i] != -1)
+            {
+                //printf("%d ", validcell[j][i]);
+                if (j == 2 && validcell[j][i] > validcell[j][maxIndex])
+                {
+                        maxIndex = i;
+                }
+            }
+        }
+        //printf("\n");
+    }
+    return maxIndex;
 }
 void checkvalidcell(int MapArray[][8], int validcell[][60], int bead)
 {
