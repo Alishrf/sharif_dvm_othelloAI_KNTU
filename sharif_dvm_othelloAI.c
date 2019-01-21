@@ -19,13 +19,13 @@ int main(int argc, char const *argv[])
     int bead;
     int MapArray[8][8];   // our game map 2d-array
     int validcell[3][60]; //shows valid cell
+    bead = *argv[9] - 48;                      //bead var shows our bead color
     for (i = 0; i < 60; i++)
     {
         validcell[0][i] = -1;
         validcell[1][i] = -1;
         validcell[2][i] = -1;
     }
-    bead = *argv[9] - 48;                      //bead var shows our bead color
     createmap(argv, MapArray);                 // puts argvs in 2d-array
     checkvalidcell(MapArray, validcell, bead); //finds validcells and puts them + score in 60*3 array
     //printmap(MapArray);  //checking game map (commented during final release)
@@ -59,6 +59,7 @@ void printmap(int MapArray[][8])
         printf("\n");
     }
 }
+//remove danger cell
 void removeDangerZone(int validcell[][60])
 {
     int i, j;
@@ -68,14 +69,25 @@ void removeDangerZone(int validcell[][60])
         {
             if (validcell[j][i] != -1)
             {
-                if (j == 2 && ((validcell[1][i] == 1 && validcell[0][i] == 1) || (validcell[1][i] == 6 && validcell[0][i] == 1) || (validcell[1][i] == 1 && validcell[0][i] == 6) || (validcell[1][i] == 6 && validcell[0][i] == 6)))
+                if (j == 2 &&
+                 ((validcell[0][i] == 1 && validcell[1][i] == 1)||
+                  (validcell[0][i] == 6 && validcell[1][i] == 1) || 
+                  (validcell[0][i] == 1 && validcell[1][i] == 6) || 
+                  (validcell[0][i] == 6 && validcell[1][i] == 6)||
+                  (validcell[0][i] == 0 && validcell[1][i] == 1)||
+                  (validcell[0][i] == 1 && validcell[1][i] == 0)||
+                  (validcell[0][i] == 6 && validcell[1][i] == 7)||
+                  (validcell[0][i] == 7 && validcell[1][i] == 6)||
+                  (validcell[0][i] == 0 && validcell[1][i] == 6)||
+                  (validcell[0][i] == 1 && validcell[1][i] == 7)||
+                  (validcell[0][i] == 6 && validcell[1][i] == 0)||
+                  (validcell[0][i] == 7 && validcell[1][i] == 1))
+                  )
                 {
                     validcell[j][i] = 0;
                 }
-                //printf("%d ", validcell[j][i]);
             }
         }
-        //printf("\n");
     }
 }
 int getMaxIndex(int validcell[][60])
@@ -109,19 +121,19 @@ void checkvalidcell(int MapArray[][8], int validcell[][60], int bead)
             {
                 if ((i + 1) < 8 && MapArray[i + 1][j] != bead && MapArray[i + 1][j] != 0)
                     checkdown(MapArray, validcell, bead, i, j);
-                if ((i - 1) > 0 && MapArray[i - 1][j] != bead && MapArray[i - 1][j] != 0)
+                if ((i - 1) >= 0 && MapArray[i - 1][j] != bead && MapArray[i - 1][j] != 0)
                     checkup(MapArray, validcell, bead, i, j);
                 if ((j + 1) < 8 && MapArray[i][j + 1] != bead && MapArray[i][j + 1] != 0)
                     checkright(MapArray, validcell, bead, i, j);
-                if ((j - 1) > 0 && MapArray[i][j - 1] != bead && MapArray[i][j - 1] != 0)
+                if ((j - 1) >= 0 && MapArray[i][j - 1] != bead && MapArray[i][j - 1] != 0)
                     checkleft(MapArray, validcell, bead, i, j);
-                if ((j + 1) < 8 && (i - 1) > 0 && MapArray[i - 1][j + 1] != bead && MapArray[i - 1][j + 1] != 0)
+                if ((j + 1) < 8 && (i - 1) >= 0 && MapArray[i - 1][j + 1] != bead && MapArray[i - 1][j + 1] != 0)
                     checkupright(MapArray, validcell, bead, i, j);
                 if ((j + 1) < 8 && (i + 1) < 8 && MapArray[i + 1][j + 1] != bead && MapArray[i + 1][j + 1] != 0)
                     checkdownright(MapArray, validcell, bead, i, j);
-                if ((j - 1) > 0 && (i - 1) > 0 && MapArray[i - 1][j - 1] != bead && MapArray[i - 1][j - 1] != 0)
+                if ((j - 1) >= 0 && (i - 1) >= 0 && MapArray[i - 1][j - 1] != bead && MapArray[i - 1][j - 1] != 0)
                     checkupleft(MapArray, validcell, bead, i, j);
-                if ((j - 1) > 0 && (i + 1) < 8 && MapArray[i + 1][j - 1] != bead && MapArray[i + 1][j - 1] != 0)
+                if ((j - 1) >= 0 && (i + 1) < 8 && MapArray[i + 1][j - 1] != bead && MapArray[i + 1][j - 1] != 0)
                     checkdownleft(MapArray, validcell, bead, i, j);
             }
         }
@@ -148,12 +160,11 @@ void checkdown(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 void checkup(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 {
     int i, j;
-    for (i = 1; x - i > 0; i++)
+    for (i = 1; x - i >= 0; i++)
     {
-        if (MapArray[x][y - i] == bead)
+        if (MapArray[x-i][y] == bead)
         {
-            for (j = 0; validcell[0][j] != -1; j++)
-                ;
+            for (j = 0; validcell[0][j] != -1; j++);
             validcell[0][j] = x;
             validcell[1][j] = y;
             validcell[2][j] = i - 1;
@@ -166,7 +177,7 @@ void checkup(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 void checkleft(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 {
     int i, j;
-    for (i = 1; y - i > 0; i++)
+    for (i = 1; y - i >= 0; i++)
     {
         if (MapArray[x][y - i] == bead)
         {
@@ -220,7 +231,7 @@ void checkdownright(int MapArray[][8], int validcell[][60], int bead, int x, int
 void checkupright(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 {
     int i, j;
-    for (i = 1; y + i < 8 && x - i > 0; i++)
+    for (i = 1; y + i < 8 && x - i >= 0; i++)
     {
         if (MapArray[x - i][y + i] == bead)
         {
@@ -238,7 +249,7 @@ void checkupright(int MapArray[][8], int validcell[][60], int bead, int x, int y
 void checkupleft(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 {
     int i, j;
-    for (i = 1; y - i > 0 && x - i > 0; i++)
+    for (i = 1; y - i >= 0 && x - i >= 0; i++)
     {
         if (MapArray[x - i][y - i] == bead)
         {
@@ -256,7 +267,7 @@ void checkupleft(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 void checkdownleft(int MapArray[][8], int validcell[][60], int bead, int x, int y)
 {
     int i, j;
-    for (i = 1; y - i > 0 && x + i < 8; i++)
+    for (i = 1; y - i >= 0 && x + i < 8; i++)
     {
         if (MapArray[x + i][y - i] == bead)
         {
